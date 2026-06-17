@@ -10,7 +10,7 @@ services:
       - DB_DATABASE=pino-parkir
       - DB_USERNAME=root
       - DB_PASSWORD=123
-      - SESSION_DRIVER=database
+      - SESSION_DRIVER=file
       - QUEUE_CONNECTION=file
       - CACHE_STORE=file
     depends_on:
