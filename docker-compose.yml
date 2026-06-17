@@ -15,7 +15,7 @@ services:
       - QUEUE_CONNECTION=file
       - CACHE_STORE=file
     depends_on:
-      - db
+      - db_pino
   
   web_pino:
     image: nginx:alpine
