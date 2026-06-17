@@ -3,6 +3,8 @@ services:
     build: .
     ports:
       - "8000-8002:80"
+    volumes:
+      - .:/var/www/html
     environment:
       - DB_CONNECTION=mysql
       - DB_HOST=db
