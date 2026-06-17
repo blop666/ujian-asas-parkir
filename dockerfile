@@ -12,4 +12,7 @@ COPY --from=composer /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www/html
 COPY . .
-RUN chown -R www-data:www-data storage bootstrap/cache
+
+
+RUN chown -R www-data:www-data /var/www/html
+RUN chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
