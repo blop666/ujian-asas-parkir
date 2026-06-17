@@ -1,36 +1,27 @@
 services:
-  app_pino:
+  app:
     build: .
-    restart: unless-stopped
+    ports:
+      - "8000-8002:80"
     volumes:
-      - .:/var/www/html
+      - .:/web/pino
+      - app_session:/web/pino/storage/framework/sessions
     environment:
       - DB_CONNECTION=mysql
-      - DB_HOST=db_pino
+      - DB_HOST=db
       - DB_PORT=3306
       - DB_DATABASE=parkir
       - DB_USERNAME=root
       - DB_PASSWORD=123
       - SESSION_DRIVER=file
-      - QUEUE_CONNECTION=file
       - CACHE_STORE=file
+      - QUEUE_CONNECTION=file
     depends_on:
-      - db_pino
+      - db
   
-  web_pino:
-    image: nginx:alpine
-    ports:
-      - "4000-4002:80"
-    volumes:
-      - .:/var/www/html
-      - ./nginx-container.conf:/etc/nginx/conf.d/default.conf
-    depends_on:
-      - db_pino
-      - app_pino
-
-  db_pino:
-    image: mariadb:10.11
-    container_name: parking_db
+  db:
+    image: mysql:8.0
+    container_name: parking-db
     environment:
       - MYSQL_DATABASE=parkir
       - MYSQL_ROOT_PASSWORD=123
@@ -39,3 +30,4 @@ services:
 
 volumes:
   dbdata:
+  app_session:

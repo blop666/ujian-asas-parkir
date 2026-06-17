@@ -1,13 +1,20 @@
-FROM php:8.2-fpm
+FROM php:8.2-apache
 
 RUN apt update && apt upgrade -y
-RUN apt install -y libzip-dev zip unzip git mariadb-client
-RUN docker-php-ext-install pdo pdo_mysql zip
+RUN apt install -y zip unzip git
+RUN docker-php-ext-install pdo_mysql
+RUN mkdir -p /web/pino
 
-WORKDIR /var/www/html
+WORKDIR /web/pino
 
-COPY . .
+RUN sed -ri -e 's|/var/www/html|/web/pino|g' /etc/apache2/sites-available/*.conf
+RUN sed -ri -e 's|/var/www|/web/pino|g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
 
 COPY --from=composer /usr/bin/composer /usr/bin/composer
 
-CMD [ "php-fpm" ]
+COPY . .
+
+RUN chown -R www-data:www-data /web/pino
+RUN chmod -R 755 /web/pino/storage /web/pino/bootstrap/cache
+
+RUN a2enmod rewrite
