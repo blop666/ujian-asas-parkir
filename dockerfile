@@ -7,8 +7,9 @@ RUN mkdir -p /web/pino
 
 WORKDIR /web/pino
 
-RUN sed -ri -e 's|/var/www/html|/web/pino|g' /etc/apache2/sites-available/*.conf
+RUN sed -ri -e 's|/var/www/html|/web/pino/public|g' /etc/apache2/sites-available/*.conf
 RUN sed -ri -e 's|/var/www|/web/pino|g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
+RUN sed -ri -e 's|AllowOverride None|AllowOverride All|g' /etc/apache2/apache2.conf
 
 COPY --from=composer /usr/bin/composer /usr/bin/composer
 
